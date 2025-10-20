@@ -28,6 +28,7 @@ def shopping_cart(best_buy):
 
     while True:
         product_num = input("\nWhich product # do you want? ")
+
         if product_num == "":
             break
         try:
@@ -39,9 +40,18 @@ def shopping_cart(best_buy):
             print("Invalid product number.")
             continue
 
-        amount = int(input("What amount do you want? "))
+        product = active_products[product_num - 1]
+        amount = input("What amount do you want? ")
+        try:
+            amount = int(amount)
+        except ValueError:
+            print("Please enter a valid integer amount.")
+            continue
         if amount <= 0:
             print("Amount must be > 0.")
+            continue
+        if amount > product.get_quantity():
+            print(f"Not enough stock of '{product.name}'. Only {product.quantity} left.")
             continue
 
         shopping_list.append((active_products[product_num-1],amount))
@@ -49,10 +59,14 @@ def shopping_cart(best_buy):
 
     print(colored("\nOrder made!\n",'yellow'))
     for product,amount in shopping_list:
-        print(f"- {product.name}, {amount} items, price: {product.price*amount}")
-    total_price = best_buy.order(shopping_list)
-    print("\n"+"*"*35)
-    print(colored("Total payment:",'blue'), colored(total_price,'blue'))
+        print(f"- {product.name}, {amount} item(s), price: {product.price*amount}")
+
+    try:
+        total_price = best_buy.order(shopping_list)
+        print("\n"+"*"*35)
+        print(colored("Total payment:",'blue'), colored(total_price,'blue'))
+    except ValueError as e:
+        print(e)
 
 
 def start(best_buy):
@@ -89,6 +103,9 @@ def main():
                 ]
 
     best_buy = store.Store(product_list)
+
+    google_pixel_8 = products.Product("Google Pixel 8", price=700, quantity=25)
+    best_buy.add_product(google_pixel_8)
 
     start(best_buy)
 

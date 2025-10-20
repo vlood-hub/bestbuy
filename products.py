@@ -69,7 +69,7 @@ class Product:
         if not self.active:
             return f"Cannot buy '{self.name}' — product is inactive or out of stock."
         if quantity > self.quantity:
-            return f"Not enough stock of '{self.name}'. Only {self.quantity} left."
+            raise ValueError(f"Not enough stock of '{self.name}'. Only {self.quantity} left.")
 
         self.set_quantity(self.quantity - quantity)
 
