@@ -1,7 +1,3 @@
-
-import products
-
-
 class Store:
 
     def __init__(self, product_list):
@@ -21,13 +17,10 @@ class Store:
 
     def get_all_products(self): #-> list[Product]:
         """Returns all products in the store that are active."""
-
         return [product for product in self.product_list if product.is_active()]
 
     def order(self, shopping_list) -> float:
-        """Gets a list of tuples, where each tuple has 2 items:
-            Product (Product class) and quantity (int).
-            Buys the products and returns the total price of the order."""
+        """Calculates the total price of order."""
         total_price = 0.0
         for product, quantity in shopping_list:
             total_price += product.buy(quantity)
